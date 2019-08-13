@@ -1,4 +1,7 @@
-from funcoesAuxiliares import media
+import funcoesAuxiliares
 
-m = media(nome="thiago", n1=7)
-print()
+
+
+res = funcoesAuxiliares.converteDecimal(0.1)
+print(res, res.__class__)
+
