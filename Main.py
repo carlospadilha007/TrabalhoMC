@@ -1,7 +1,4 @@
-import funcoesAuxiliares
+from FuncoesSecundarias import leNumero
 
 
-
-res = funcoesAuxiliares.converteDecimal(0.1)
-print(res, res.__class__)
-
+leNumero()

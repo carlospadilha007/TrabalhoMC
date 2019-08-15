@@ -11,6 +11,7 @@ def inverteNum(l):
     num = int(num)
     return num
 
+
 # transforma o "vetor" (lista) em um numero unico
 def joinNum(l):
     '''
@@ -20,8 +21,7 @@ def joinNum(l):
     for i, c in enumerate(l):
         l[i] = str(l[i])
     num = "0." + "".join(l)
-    print(num, num.__class__)
-    float(num)
+    num = float(num)
     return num
 
 
@@ -38,11 +38,10 @@ def converteInteiro (num):
 def converteDecimal(num):
     i = 0
     l = list()
-    while (i < 55) and (num != 0.0):
+    while (i < 52) and (num != 0.0):
         aux = int(num * 2)
         l.append(aux)
         num = num * 2
         num = num - l[len(l) - 1]
         i += 1
     return joinNum(l)
-
