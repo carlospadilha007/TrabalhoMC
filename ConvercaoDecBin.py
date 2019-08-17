@@ -21,16 +21,19 @@ def joinNum(l):
     for i, c in enumerate(l):
         l[i] = str(l[i])
     num = "0." + "".join(l)
-    num = float(num)
+    float(num)
     return num
 
 
 # converte a parte inteira de um numero para binario
 def converteInteiro (num):
     l = []
-    while num >= 1:
-        l.append(num % 2)
-        num = int(num / 2)
+    if num == 0:
+        l.append(0)
+    else:
+        while num >= 1:
+            l.append(num % 2)
+            num = int(num / 2)
     return inverteNum(l)
 
 
@@ -38,10 +41,11 @@ def converteInteiro (num):
 def converteDecimal(num):
     i = 0
     l = list()
-    while (i < 52) and (num != 0.0):
+    while (i < 50) and (num > 0.0):
         aux = int(num * 2)
         l.append(aux)
         num = num * 2
         num = num - l[len(l) - 1]
         i += 1
+    # print(l)
     return joinNum(l)

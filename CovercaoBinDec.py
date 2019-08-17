@@ -14,7 +14,7 @@ def converteInteiroBin(num):
     return soma
 
 
-def converteDecimalBin(num):
+def converteDecimalBin(num, n):
     num = str(num)
     soma = 0.0
     j = 1
@@ -25,7 +25,7 @@ def converteDecimalBin(num):
     for i, o in enumerate(l):
         l[i] = int(l[i])
     # falta passa como parametro a precisão para limitar, o tamanho do for
-    for i in range(0, 6):
+    for i in range(0, n):
         soma += l[i] * 2**(-j)
         j += 1
     return soma
