@@ -8,7 +8,6 @@ def inverteNum(l):
     for i, c in enumerate(l):
         l[i] = str(l[i])
     num = "".join(l)
-    num = int(num)
     return num
 
 
