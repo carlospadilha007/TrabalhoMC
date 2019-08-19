@@ -4,7 +4,7 @@ from ConvercaoDecBin import converteDecimal, converteInteiro
 from CovercaoBinDec import converteInteiroBin, converteDecimalBin
 
 
-def leNumero():
+def leNumero(precisao, lower, upper):
     inteiro = decimal = inteiroBin = decimalBin = sinal = 0
     num = str(input("Digite um numero: ")).strip()
     if float(num) > 0:
@@ -29,11 +29,20 @@ def leNumero():
         num = str(inteiroBin)
     else:
         num = str(inteiroBin) + str(decimalBin[1::])
-    print(complementoDe2(num, sinal))
+    if decimal == 0.0:
+        inteiro = converteInteiroBin(inteiroBin)
+    else:
+        decimal = converteDecimalBin(decimalBin, precisao)
+        inteiro = converteInteiroBin(inteiroBin)
+    print(num)
+    print(float(inteiro) + float(decimal))
+    var = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
+    if var != 0:
+        print(f"{var:.{precisao}}")
 
 
-def normaliza(inteiroBin, decimalBin, isNumeric):
-    if inteiroBin != 0:
+def normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper):
+    if inteiroBin != '0':
         if isNumeric:
             decimalBin = "0." + str(inteiroBin)
             decimalBin = float(decimalBin)
@@ -46,7 +55,10 @@ def normaliza(inteiroBin, decimalBin, isNumeric):
             inteiroBin = str(inteiroBin)
             base = len(inteiroBin)
             num = str(decimalBin) + " 2e" + str(base)
+        if len(str(decimalBin)) - 2 > precisao:
+            print('Truncamento')
     else:
+        decimalBin = str(decimalBin)
         i = base = 0
         l = list()
         for i in range(2, len(decimalBin)):
@@ -65,22 +77,31 @@ def normaliza(inteiroBin, decimalBin, isNumeric):
                 break
         decimalBin = "0." + "".join(l)
         decimal = float(decimalBin)
+        if len(str(decimalBin)) - 2 > precisao:
+            print('Truncamento')
         if base != 0:
             num = str(decimalBin) + " 2e-" + str(base)
         else:
             num = str(decimalBin) + " 2e0"
+    if base > upper:
+        print("Overflow")
+        return 0
+    base = base * (-1)
+    if base < lower:
+        print("Underflow")
+        return 0
     return num
 
 
 def sinalAmplitude(num, sinal):
     if sinal == 0:
         if num[0] == '0':
-            num = "0.0" + str(num[2::])
+            num = "00." + str(num[2::])
         else:
             num = "0" + str(num)
     else:
         if num[0] == '0':
-            num = "0.1" + str(num[2::])
+            num = "10." + str(num[2::])
         else:
             num = "1" + str(num)
     return num
