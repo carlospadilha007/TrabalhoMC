@@ -31,14 +31,32 @@ def leNumero(precisao, lower, upper):
         num = str(inteiroBin) + str(decimalBin[1::])
     if decimal == 0.0:
         inteiro = converteInteiroBin(inteiroBin)
+        numInteiro = inteiro
     else:
         decimal = converteDecimalBin(decimalBin, precisao)
         inteiro = converteInteiroBin(inteiroBin)
-    print(num)
-    print(float(inteiro) + float(decimal))
-    var = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
-    if var != 0:
-        print(f"{var:.{precisao}}")
+        numInteiro = inteiro + decimal
+
+    # Apresentação dos dados:
+
+    if sinal == 1:
+        print(f"Número binário: -{num:.{precisao + 1}}")
+        norma = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
+        if norma != 0:
+            print(f"Número normalizado: {sinal} {norma[0]:.{precisao + 1}} 2e{norma[1]}")
+        sn = sinalAmplitude(num, sinal)
+        cp1 = complementoDeUm(num, sinal)
+        cp2 = complementoDe2(num, sinal)
+        print(f"Sinal e amplitude: {sn[:precisao + 1]}")
+        print(f"Complemento de um: {cp1[:precisao + 1]}")
+        print(f"Complemento de dois: {cp2[:precisao + 1]}")
+        print(f"Numero decimal: -{numInteiro}")
+    else:
+        print(f"Número binário: {num:.{precisao + 1}}")
+        norma = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
+        if norma != 0:
+            print(f"Número normalizado: {sinal} {norma[0]:.{precisao + 1}} 2e{norma[1]}")
+        print(f"Numero decimal: {numInteiro}")
 
 
 def normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper):
@@ -48,13 +66,13 @@ def normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper):
             decimalBin = float(decimalBin)
             inteiroBin = str(inteiroBin)
             base = len(inteiroBin)
-            num = str(decimalBin) + " 2e" + str(base)
+            num = str(decimalBin)
         else:
             decimalBin = "0." + str(inteiroBin) + str(decimalBin[2:len(decimalBin)])
             decimalBin = float(decimalBin)
             inteiroBin = str(inteiroBin)
             base = len(inteiroBin)
-            num = str(decimalBin) + " 2e" + str(base)
+            num = str(decimalBin)
         if len(str(decimalBin)) - 2 > precisao:
             print('Truncamento')
     else:
@@ -80,17 +98,20 @@ def normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper):
         if len(str(decimalBin)) - 2 > precisao:
             print('Truncamento')
         if base != 0:
-            num = str(decimalBin) + " 2e-" + str(base)
+            num = str(decimalBin)
         else:
-            num = str(decimalBin) + " 2e0"
+            num = str(decimalBin)
+        base = base * (-1)
     if base > upper:
-        print("Overflow")
+        print("Número normalizado: Overflow")
         return 0
-    base = base * (-1)
     if base < lower:
-        print("Underflow")
+        print("Número normalizado: Underflow")
         return 0
-    return num
+    norma = []
+    norma.append(num)
+    norma.append(base)
+    return norma
 
 
 def sinalAmplitude(num, sinal):

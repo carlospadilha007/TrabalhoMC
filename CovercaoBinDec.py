@@ -24,8 +24,12 @@ def converteDecimalBin(num, n):
     l.pop(0), l.pop(0)
     for i, o in enumerate(l):
         l[i] = int(l[i])
-    # falta passa como parametro a precisão para limitar, o tamanho do for
-    for i in range(0, n):
-        soma += l[i] * 2**(-j)
-        j += 1
+    if len(num) > n:
+        for i in range(0, n + 1):
+            soma += l[i] * 2**(-j)
+            j += 1
+    else:
+        for i in range(0, len(num) - 2):
+            soma += l[i] * 2**(-j)
+            j += 1
     return soma
