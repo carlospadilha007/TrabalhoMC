@@ -33,17 +33,17 @@ def leNumero(precisao, lower, upper):
         inteiro = converteInteiroBin(inteiroBin)
         numInteiro = inteiro
     else:
-        decimal = converteDecimalBin(decimalBin, precisao)
+        decimal = converteDecimalBin(decimalBin, precisao - len(inteiroBin))
         inteiro = converteInteiroBin(inteiroBin)
         numInteiro = inteiro + decimal
 
     # Apresentação dos dados:
 
     if sinal == 1:
-        print(f"Número binário: -{num:.{precisao + 1}}")
+        print(f"Número binário: -{num:.{len(num)}}")
         norma = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
         if norma != 0:
-            print(f"Número normalizado: {sinal} {norma[0]:.{precisao + 1}} 2e{norma[1]}")
+            print(f"Número normalizado: {sinal} {norma[0]:.{precisao + 2}} 2e{norma[1]}")
         sn = sinalAmplitude(num, sinal)
         cp1 = complementoDeUm(num, sinal)
         cp2 = complementoDe2(num, sinal)
@@ -52,10 +52,10 @@ def leNumero(precisao, lower, upper):
         print(f"Complemento de dois: {cp2[:precisao + 1]}")
         print(f"Numero decimal: -{numInteiro}")
     else:
-        print(f"Número binário: {num:.{precisao + 1}}")
+        print(f"Número binário: {num:.{len(num)}}")
         norma = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
         if norma != 0:
-            print(f"Número normalizado: {sinal} {norma[0]:.{precisao + 1}} 2e{norma[1]}")
+            print(f"Número normalizado: {sinal} {norma[0]:.{precisao + 2}} 2e{norma[1]}")
         print(f"Numero decimal: {numInteiro}")
 
 
@@ -117,14 +117,16 @@ def normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper):
 def sinalAmplitude(num, sinal):
     if sinal == 0:
         if num[0] == '0':
-            num = "00." + str(num[2::])
+            num = "0." + str(num[2::])
         else:
-            num = "0" + str(num)
+            lista = num.split(".")
+            num = "".join(lista)
     else:
         if num[0] == '0':
-            num = "10." + str(num[2::])
+            num = "0." + str(num[2::])
         else:
-            num = "1" + str(num)
+            lista = num.split(".")
+            num = "".join(lista)
     return num
 
 
@@ -153,6 +155,7 @@ def complementoDe2(num, sinal):
             c = 0
             break
         elif l[i] == '1':
+            l[i] = '0'
             c = 1
     num = ''.join(l)
     if c == 1:
