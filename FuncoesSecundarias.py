@@ -43,28 +43,28 @@ def leNumero(precisao, lower, upper):
         print(f"Número binário: -{num:.{len(num)}}")
         norma = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
         if norma != 0:
-            print(f"Número normalizado: 0 {norma[0]:.{precisao + 2}} 2e{norma[1]}")
+            print(f"Número normalizado:  0 {norma[0]:.{precisao + 2}} 2e{norma[1]}")
         if float(num) < 1:
             expoente = normalizaFracionario(num)
             num = expoente[0]
             expoente = expoente[1]
         sn = sinalAmplitude(num, sinal)
-        cp1 = complementoDeUm(num, sinal)
+        cp1 = complementoDeUm(num, sinal, precisao)
         cp2 = complementoDe2(num, sinal, precisao)
         if expoente == 0:
-            print(f"Sinal e amplitude: 1 .{sn[:precisao + 1]}")
-            print(f"Complemento de um: 1 .{cp1[:precisao + 1]}")
+            print(f"Sinal e amplitude:   1 .{sn[:precisao + 1]}")
+            print(f"Complemento de um:   1 .{cp1[:precisao + 1]}")
             print(f"Complemento de dois: 1 .{cp2[:precisao + 1]}")
         else:
-            print(f"Sinal e amplitude: 1 .{sn[:precisao + 1]} 2e-{expoente}")
-            print(f"Complemento de um: 1 .{cp1[:precisao + 1]} 2e-{expoente}")
+            print(f"Sinal e amplitude:   1 .{sn[:precisao + 1]} 2e-{expoente}")
+            print(f"Complemento de um:   1 .{cp1[:precisao + 1]} 2e-{expoente}")
             print(f"Complemento de dois: 1 .{cp2[:precisao + 1]} 2e-{expoente}")
         print(f"Numero decimal: -{numInteiro}")
     else:
         print(f"Número binário: {num:.{len(num)}}")
         norma = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
         if norma != 0:
-            print(f"Número normalizado: {sinal} {norma[0]:.{precisao + 2}} 2e{norma[1]}")
+            print(f"Número normalizado:  {sinal} {norma[0]:.{precisao + 2}} 2e{norma[1]}")
         print(f"Numero decimal: {numInteiro}")
 
 
@@ -139,7 +139,7 @@ def sinalAmplitude(num, sinal):
     return num
 
 
-def complementoDeUm(num, sinal):
+def complementoDeUm(num, sinal, precisao):
     l=[]
     num = sinalAmplitude(num, sinal)
     for i in range(0, len(num)):
@@ -148,6 +148,10 @@ def complementoDeUm(num, sinal):
             l[i] = '0'
         elif l[i]== '0':
             l[i] = '1'
+    if len(l) < precisao:
+        tan = precisao - len(l)
+        for i in range(0, tan):
+            l.append('0')
     num = ''.join(l)
     return num
 
@@ -155,8 +159,8 @@ def complementoDeUm(num, sinal):
 def complementoDe2(num, sinal, precisao):
     l = []
     c = 0
-    num = complementoDeUm(num, sinal)
-    if len(num) < precisao:
+    num = complementoDeUm(num, sinal, precisao)
+    if len(num) <= precisao:
         aux = len(num) - 1
     else:
         aux = precisao
@@ -174,6 +178,7 @@ def complementoDe2(num, sinal, precisao):
     if c == 1:
         print('overflow')
     return num
+
 
 def normalizaFracionario(decimalBin):
         decimalBin = str(decimalBin)
