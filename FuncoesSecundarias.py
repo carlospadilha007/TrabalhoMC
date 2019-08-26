@@ -13,17 +13,17 @@ def leNumero(precisao, lower, upper):
         sinal = 1
         num = str(num[1::])
     isNumeric = num.isnumeric()  # guarda se o numero é só inteiro ou decimal
-    if float(num) == 0:
+    if float(num) == 0:  # se numero for 0
         inteiroBin = decimalBin = 0
         print(f"Número binário: 0")
         print(f"Número normalizado:  0 .", "0" * precisao)
         print(f"Numero decimal: 0")
         return
-    if num.isnumeric() or int(num) == 0:  # se o numero não tiver parte decimal
+    if num.isnumeric():  # se o numero não tiver parte decimal
         inteiro = int(num)
         decimal = 0.0
         inteiroBin = converteInteiro(inteiro)
-    else:  # # se o numero tiver parte decimal
+    else:  # se o numero tiver parte decimal
         l = num.split(".")
         inteiro = l[0].strip()
         decimal = "0." + l[1].strip()
