@@ -50,23 +50,23 @@ def leNumero(precisao, lower, upper):
         norma = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
         if norma != 0:
             print(f"Número normalizado:  0 {norma[0]:.{precisao + 2}} 2e{norma[1]}")
-        if float(num) < 1:
+        if float(num) < 1:  # caso o numero esteja entre o e um o sinal e amplitude, complemento usão o num nromalizado
             expoente = normalizaFracionario(num)
             num = expoente[0]
             expoente = expoente[1]
         sn = sinalAmplitude(num, sinal)
         cp1 = complementoDeUm(num, sinal, precisao)
         cp2 = complementoDe2(num, sinal, precisao)
-        if expoente == 0:
+        if expoente == 0:  # se exponte 0 (numero sem parte decimal)
             print(f"Sinal e amplitude:   1 .{sn[:precisao + 1]}")
             print(f"Complemento de um:   1 .{cp1[:precisao + 1]}")
             print(f"Complemento de dois: 1 .{cp2[:precisao + 1]}")
-        else:
+        else:  # se o exponte for negativo
             print(f"Sinal e amplitude:   1 .{sn[:precisao + 1]} 2e-{expoente}")
             print(f"Complemento de um:   1 .{cp1[:precisao + 1]} 2e-{expoente}")
             print(f"Complemento de dois: 1 .{cp2[:precisao + 1]} 2e-{expoente}")
         print(f"Numero decimal: -{numInteiro}")
-    else:
+    else:  # se o numero digitado for positivo
         print(f"Número binário: {num:.{len(num)}}")
         norma = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
         if norma != 0:
@@ -75,14 +75,15 @@ def leNumero(precisao, lower, upper):
 
 
 def normaliza(inteiroBin, decimalBin, isNumeric=False, precisao=50, lower=-50, upper=50):
-    if inteiroBin != '0':
-        if isNumeric:
+    # base guarda o expoente
+    if inteiroBin != '0':  # se o numero tiver a parte inteira diferente de 0
+        if isNumeric:  # se possui apenas a parte inteira
             decimalBin = "0." + str(inteiroBin)
             decimalBin = float(decimalBin)
             inteiroBin = str(inteiroBin)
             base = len(inteiroBin)
             num = str(decimalBin)
-        else:
+        else: # se possui apenas a parte real
             decimalBin = "0." + str(inteiroBin) + str(decimalBin[2:len(decimalBin)])
             decimalBin = float(decimalBin)
             inteiroBin = str(inteiroBin)
@@ -90,13 +91,14 @@ def normaliza(inteiroBin, decimalBin, isNumeric=False, precisao=50, lower=-50, u
             num = str(decimalBin)
         if len(str(decimalBin)) - 2 > precisao:
             print('Truncamento')
-    else:
+    else:  # se o numero tiver a apenas parte real
         decimalBin = str(decimalBin)
         i = base = 0
         l = list()
         for i in range(2, len(decimalBin)):
             l.append(decimalBin[i])
         i = 0
+        # conta o numero de 0 antes do primeiro 1 (calculo o expoente nagativo)
         while True:
             if l[i] == '0':
                 base += 1
@@ -130,31 +132,26 @@ def normaliza(inteiroBin, decimalBin, isNumeric=False, precisao=50, lower=-50, u
 
 
 def sinalAmplitude(num, sinal):
-    if sinal == 0:
-        if num[0] == '0':
-            num = num
-        else:
-            lista = num.split(".")
-            num = "".join(lista)
-    else:
-        if num[0] == '0':
-            num = num
-        else:
-            lista = num.split(".")
-            num = "".join(lista)
+    if sinal == 0:  # se numero positivo
+        lista = num.split(".")
+        num = "".join(lista)
+    else:  # se numero negativo
+        lista = num.split(".")
+        num = "".join(lista)
     return num
 
 
 def complementoDeUm(num, sinal, precisao):
     l=[]
     num = sinalAmplitude(num, sinal)
+    # complemento de 1 do numero (invercao dos valores)
     for i in range(0, len(num)):
         l.append(num[i])
-        if l[i] == '1':
+        if l[i] == '1':  # 0 vira 1
             l[i] = '0'
-        elif l[i]== '0':
+        elif l[i] == '0':  # 1 vira 0
             l[i] = '1'
-    if len(l) < precisao:
+    if len(l) < precisao:  # verifica se falta valores na mantissa para preencher de 0s
         tan = precisao - len(l)
         for i in range(0, tan):
             l.append('0')
@@ -166,13 +163,13 @@ def complementoDe2(num, sinal, precisao):
     l = []
     c = 0
     num = complementoDeUm(num, sinal, precisao)
-    if len(num) <= precisao:
+    if len(num) <= precisao:  # se numero for menor que a precição (para não extouro da posição da lista)
         aux = len(num) - 1
     else:
         aux = precisao
     for i in range(0, aux + 1):
         l.append(num[i])
-    for i in range(aux, -1, -1):
+    for i in range(aux, -1, -1):  # faz o complemento de 2
         if l[i] == '0':
             l[i] = '1'
             c = 0
@@ -185,7 +182,7 @@ def complementoDe2(num, sinal, precisao):
         print('overflow')
     return num
 
-
+# calcula o expoente e normaliza os numeros entre 0 e 1
 def normalizaFracionario(decimalBin):
         decimalBin = str(decimalBin)
         i = base = 0
@@ -193,7 +190,7 @@ def normalizaFracionario(decimalBin):
         for i in range(2, len(decimalBin)):
             l.append(decimalBin[i])
         i = 0
-        while True:
+        while True:  # vide normaliza numeros menores 1 e maiores que 0
             if l[i] == '0':
                 base += 1
             else:
