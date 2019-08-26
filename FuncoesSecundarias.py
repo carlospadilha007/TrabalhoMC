@@ -7,17 +7,23 @@ from CovercaoBinDec import converteInteiroBin, converteDecimalBin
 def leNumero(precisao, lower, upper):
     inteiro = decimal = inteiroBin = decimalBin = sinal = expoente = 0
     num = str(input("Digite um numero: ")).strip()
-    if float(num) > 0:
+    if float(num) >= 0:  # guarda o sinal do numero digitado
         sinal = 0
     else:
         sinal = 1
         num = str(num[1::])
-    isNumeric = num.isnumeric()
-    if num.isnumeric():
+    isNumeric = num.isnumeric()  # guarda se o numero é só inteiro ou decimal
+    if float(num) == 0:
+        inteiroBin = decimalBin = 0
+        print(f"Número binário: 0")
+        print(f"Número normalizado:  0 .", "0" * precisao)
+        print(f"Numero decimal: 0")
+        return
+    if num.isnumeric() or int(num) == 0:  # se o numero não tiver parte decimal
         inteiro = int(num)
         decimal = 0.0
         inteiroBin = converteInteiro(inteiro)
-    else:
+    else:  # # se o numero tiver parte decimal
         l = num.split(".")
         inteiro = l[0].strip()
         decimal = "0." + l[1].strip()
@@ -25,9 +31,9 @@ def leNumero(precisao, lower, upper):
         decimal = float(decimal)
         inteiroBin = converteInteiro(inteiro)
         decimalBin = converteDecimal(decimal)
-    if isNumeric:
+    if isNumeric:  # se o numero for apenas inteiro ele converte apenas a parte inteira
         num = str(inteiroBin)
-    else:
+    else:  # se tiver parte decimal ele concatena a inteiro binario e a fração binaria
         num = str(inteiroBin) + str(decimalBin[1::])
     if decimal == 0.0:
         inteiro = converteInteiroBin(inteiroBin)
@@ -39,7 +45,7 @@ def leNumero(precisao, lower, upper):
 
     # Apresentação dos dados:
 
-    if sinal == 1:
+    if sinal == 1:  # se numero for nagativo
         print(f"Número binário: -{num:.{len(num)}}")
         norma = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
         if norma != 0:
