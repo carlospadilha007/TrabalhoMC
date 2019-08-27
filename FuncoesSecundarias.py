@@ -48,8 +48,10 @@ def leNumero(precisao, lower, upper):
     if sinal == 1:  # se numero for nagativo
         print(f"Número binário: -{num:.{len(num)}}")
         norma = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
-        if norma != 0:
+        if norma != -1:
             print(f"Número normalizado:  0 {norma[0]:.{precisao + 2}} 2e{norma[1]}")
+        else:
+            return
         if float(num) < 1:  # caso o numero esteja entre o e um o sinal e amplitude, complemento usão o num nromalizado
             expoente = normalizaFracionario(num)
             num = expoente[0]
@@ -66,14 +68,19 @@ def leNumero(precisao, lower, upper):
             print(f"Sinal e amplitude:   1 .{sn[:precisao + 1]} 2e-{expoente}")
             print(f"Complemento de um:   1 .{cp1[:precisao + 1]} 2e-{expoente}")
             print(f"Complemento de dois: 1 .{cp2[:precisao + 1]} 2e-{expoente}")
-        print(f"Numero decimal: -{numInteiro}")
     else:  # se o numero digitado for positivo
         print(f"Número binário: {num:.{len(num)}}")
         norma = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
-        if norma != 0:
+        if norma != -1:
             print(f"Número normalizado:  {sinal} {norma[0]:.{precisao + 2}} 2e{norma[1]}")
-        print(f"Numero decimal: {numInteiro}")
-    print(desnormaliza(str(norma[0][2:precisao+2]), int(norma[1]), sinalExp))
+    # print(chamaConvercao(norma, sinalExp, precisao))
+    expoente = norma
+    if expoente == -1:
+        return
+    if sinal == 0:
+        print(f"Numero decimal: {chamaConvercao(norma, sinalExp, precisao)}")
+    else:
+        print(f"Numero decimal: -{chamaConvercao(norma, sinalExp, precisao)}")
 
 
 def normaliza(inteiroBin, decimalBin, isNumeric=False, precisao=50, lower=-50, upper=50):
@@ -123,10 +130,10 @@ def normaliza(inteiroBin, decimalBin, isNumeric=False, precisao=50, lower=-50, u
         base = base * (-1)
     if base > upper:
         print("Número normalizado: Overflow")
-        return 0
+        return -1
     if base < lower:
         print("Número normalizado: Underflow")
-        return 0
+        return -1
     norma = []
     norma.append(num)
     norma.append(base)
@@ -221,5 +228,18 @@ def desnormaliza(numBin, expoente, sinalExp):
         if len(numBin) > expoente:
             l.insert(expoente, '.')
         numBin = "".join(l)
-        print(numBin)
         return numBin
+
+
+def chamaConvercao(norma, sinalExp, precisao):
+    print(norma[0][2:precisao + 2], norma[1], sinalExp)
+    num = desnormaliza(str(norma[0][2:precisao + 2]), norma[1], sinalExp)
+    if '.' in num:
+        l = num.split('.')
+        decimal = converteDecimalBin(str("0." + l[1]), precisao - len(l[0]))
+        inteiro = converteInteiroBin(l[0])
+        numInteiro = inteiro + decimal
+    else:
+        inteiro = converteInteiroBin(num)
+        numInteiro = inteiro
+    return numInteiro
