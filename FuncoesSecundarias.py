@@ -5,7 +5,7 @@ from CovercaoBinDec import converteInteiroBin, converteDecimalBin
 
 
 def leNumero(precisao, lower, upper):
-    inteiro = decimal = inteiroBin = decimalBin = sinal = expoente = 0
+    inteiro = decimal = inteiroBin = decimalBin = sinalExp = sinal = expoente = 0
     num = str(input("Digite um numero: ")).strip()
     if float(num) >= 0:  # guarda o sinal do numero digitado
         sinal = 0
@@ -54,6 +54,7 @@ def leNumero(precisao, lower, upper):
             expoente = normalizaFracionario(num)
             num = expoente[0]
             expoente = expoente[1]
+            sinalExp = 1
         sn = sinalAmplitude(num, sinal)
         cp1 = complementoDeUm(num, sinal, precisao)
         cp2 = complementoDe2(num, sinal, precisao)
@@ -72,6 +73,7 @@ def leNumero(precisao, lower, upper):
         if norma != 0:
             print(f"Número normalizado:  {sinal} {norma[0]:.{precisao + 2}} 2e{norma[1]}")
         print(f"Numero decimal: {numInteiro}")
+    print(desnormaliza(str(norma[0][2:precisao+2]), int(norma[1]), sinalExp))
 
 
 def normaliza(inteiroBin, decimalBin, isNumeric=False, precisao=50, lower=-50, upper=50):
@@ -83,7 +85,7 @@ def normaliza(inteiroBin, decimalBin, isNumeric=False, precisao=50, lower=-50, u
             inteiroBin = str(inteiroBin)
             base = len(inteiroBin)
             num = str(decimalBin)
-        else: # se possui apenas a parte real
+        else:  # se possui apenas a parte real
             decimalBin = "0." + str(inteiroBin) + str(decimalBin[2:len(decimalBin)])
             decimalBin = float(decimalBin)
             inteiroBin = str(inteiroBin)
@@ -182,6 +184,7 @@ def complementoDe2(num, sinal, precisao):
         print('overflow')
     return num
 
+
 # calcula o expoente e normaliza os numeros entre 0 e 1
 def normalizaFracionario(decimalBin):
         decimalBin = str(decimalBin)
@@ -206,3 +209,17 @@ def normalizaFracionario(decimalBin):
         l.append(decimalBin)
         l.append(base)
         return l
+
+
+def desnormaliza(numBin, expoente, sinalExp):
+        l = list()
+        l = list(numBin)
+        if sinalExp == 0:  # se expoente positivo
+            if len(numBin) < expoente:  # numero mantissa menor que expoente
+                for i in range(len(numBin), expoente):
+                    l.append('0')
+        if len(numBin) > expoente:
+            l.insert(expoente, '.')
+        numBin = "".join(l)
+        print(numBin)
+        return numBin
