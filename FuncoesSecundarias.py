@@ -230,9 +230,8 @@ def desnormaliza(numBin, expoente, sinalExp):
         return numBin
 
 
-# guarda numero desnormalizado, verifica se ele tem plonto flutuante ou inteiro, e depois converte para um num na ()10
+# guarda numero desnormalizado, verifica se ele tem plonto flutuante ou inteiro, e depois converte para um num na ()10'
 def chamaConvercao(norma, sinalExp, precisao):
-    print(norma[0][2:precisao + 2], norma[1], sinalExp)
     num = desnormaliza(str(norma[0][2:precisao + 2]), norma[1], sinalExp)
     if '.' in num:  # se tiver ponto flutuante ocorre convercao de parte decimal e parte ibteira
         l = num.split('.')
