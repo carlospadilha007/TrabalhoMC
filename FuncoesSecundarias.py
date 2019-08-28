@@ -52,7 +52,7 @@ def leNumero(precisao, lower, upper):
             print(f"Número normalizado:  0 {norma[0]:.{precisao + 2}} 2e{norma[1]}")
         else:
             return
-        if float(num) < 1:  # caso o numero esteja entre o e um o sinal e amplitude, complemento usão o num nromalizado
+        if float(num) < 1:  # caso o numero esteja entre 0 e 1, o sinal e amplitude, complemento usão o num nromalizado
             expoente = normalizaFracionario(num)
             num = expoente[0]
             expoente = expoente[1]
@@ -73,7 +73,6 @@ def leNumero(precisao, lower, upper):
         norma = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
         if norma != -1:
             print(f"Número normalizado:  {sinal} {norma[0]:.{precisao + 2}} 2e{norma[1]}")
-    # print(chamaConvercao(norma, sinalExp, precisao))
     expoente = norma
     if expoente == -1:
         return
@@ -231,15 +230,16 @@ def desnormaliza(numBin, expoente, sinalExp):
         return numBin
 
 
+# guarda numero desnormalizado, verifica se ele tem plonto flutuante ou inteiro, e depois converte para um num na ()10
 def chamaConvercao(norma, sinalExp, precisao):
     print(norma[0][2:precisao + 2], norma[1], sinalExp)
     num = desnormaliza(str(norma[0][2:precisao + 2]), norma[1], sinalExp)
-    if '.' in num:
+    if '.' in num:  # se tiver ponto flutuante ocorre convercao de parte decimal e parte ibteira
         l = num.split('.')
         decimal = converteDecimalBin(str("0." + l[1]), precisao - len(l[0]))
         inteiro = converteInteiroBin(l[0])
         numInteiro = inteiro + decimal
-    else:
+    else:  # convercao so da parte inteira do binario
         inteiro = converteInteiroBin(num)
         numInteiro = inteiro
-    return numInteiro
+    return numInteiro  # retorna numero na base 10
