@@ -73,13 +73,19 @@ def leNumero(precisao, lower, upper):
         norma = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
         if norma != -1:
             print(f"Número normalizado:  {sinal} {norma[0]:.{precisao + 2}} 2e{norma[1]}")
-    expoente = norma
-    if expoente == -1:
-        return
-    if sinal == 0:
-        print(f"Numero decimal: {chamaConvercao(norma, sinalExp, precisao)}")
+    if float(num) < 1:
+        if sinal == 1:
+            print(f"Numero decimal: -{numInteiro}")
+        else:
+            print(f"Numero decimal: {numInteiro}")
     else:
-        print(f"Numero decimal: -{chamaConvercao(norma, sinalExp, precisao)}")
+        expoente = norma
+        if expoente == -1:
+            return
+        if sinal == 0:
+            print(f"Numero decimal: {chamaConvercao(norma, sinalExp, precisao)}")
+        else:
+            print(f"Numero decimal: -{chamaConvercao(norma, sinalExp, precisao)}")
 
 
 def normaliza(inteiroBin, decimalBin, isNumeric=False, precisao=50, lower=-50, upper=50):
