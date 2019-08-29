@@ -152,6 +152,9 @@ def normaliza(inteiroBin, decimalBin, isNumeric=False, precisao=50, lower=-50, u
         else:
             num = str(decimalBin)
         base = base * (-1)
+    norma = []
+    norma.append(num)
+    norma.append(base)
     if base > upper:
         print("Número normalizado: Overflow")
         if truncado:
@@ -167,6 +170,8 @@ def normaliza(inteiroBin, decimalBin, isNumeric=False, precisao=50, lower=-50, u
             else:
                 fra_dec = converteDecimalBin(numTruncado, precisao)
                 print(fra_dec)
+        print(f"Número normalizado (módulo):   {norma[0]:.{precisao + 2}} 2e{norma[1]}")
+
         return -1
     elif base < lower:
         print("Número normalizado: Underflow")
@@ -183,10 +188,8 @@ def normaliza(inteiroBin, decimalBin, isNumeric=False, precisao=50, lower=-50, u
             else:
                 fra_dec = converteDecimalBin(numTruncado, precisao)
                 # print(fra_dec)
+        print(f"Número normalizado (módulo):  {norma[0]:.{precisao + 2}} 2e{norma[1]}")
         return -1
-    norma = []
-    norma.append(num)
-    norma.append(base)
     return norma
 
 

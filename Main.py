@@ -12,5 +12,7 @@ while True:
     leNumero(precisao, lower, upper)
     op = str(input('(S)-Continue ou (N)-Parar: ')).strip().upper()[0]
     if 'N' in op:
-        break
+        precisao = int(input('Número de algarismos da mantissa: '))
+        lower = int(input('Menor valor do expoente: '))
+        upper = int(input('Maior valor do expoente: '))
     os.system('cls')
