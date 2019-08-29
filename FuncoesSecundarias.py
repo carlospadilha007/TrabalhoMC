@@ -61,9 +61,9 @@ def leNumero(precisao, lower, upper):
         cp1 = complementoDeUm(num, sinal, precisao)
         cp2 = complementoDe2(num, sinal, precisao)
         if expoente == 0:  # se exponte 0 (numero sem parte decimal)
-            print(f"Sinal e amplitude:   1 .{sn[:precisao + 1]}")
-            print(f"Complemento de um:   1 .{cp1[:precisao + 1]}")
-            print(f"Complemento de dois: 1 .{cp2[:precisao + 1]}")
+            print(f"Sinal e amplitude:   1 .{sn[:precisao + 1]} 2e{expoente}")
+            print(f"Complemento de um:   1 .{cp1[:precisao + 1]} 2e{expoente}")
+            print(f"Complemento de dois: 1 .{cp2[:precisao + 1]} 2e{expoente}")
         else:  # se o exponte for negativo
             print(f"Sinal e amplitude:   1 .{sn[:precisao + 1]} 2e-{expoente}")
             print(f"Complemento de um:   1 .{cp1[:precisao + 1]} 2e-{expoente}")
@@ -73,7 +73,7 @@ def leNumero(precisao, lower, upper):
         norma = normaliza(inteiroBin, decimalBin, isNumeric, precisao, lower, upper)
         if norma != -1:
             print(f"Número normalizado:  {sinal} {norma[0]:.{precisao + 2}} 2e{norma[1]}")
-    if float(num) < 1:
+    if float(numInteiro) < 1:
         if sinal == 1:
             print(f"Numero decimal: -{numInteiro}")
         else:
@@ -90,6 +90,8 @@ def leNumero(precisao, lower, upper):
 
 def normaliza(inteiroBin, decimalBin, isNumeric=False, precisao=50, lower=-50, upper=50):
     # base guarda o expoente
+    numTruncado = 0
+    truncado = False
     if inteiroBin != '0':  # se o numero tiver a parte inteira diferente de 0
         if isNumeric:  # se possui apenas a parte inteira
             decimalBin = "0." + str(inteiroBin)
@@ -105,6 +107,21 @@ def normaliza(inteiroBin, decimalBin, isNumeric=False, precisao=50, lower=-50, u
             num = str(decimalBin)
         if len(str(decimalBin)) - 2 > precisao:
             print('Truncamento')
+            decimalBin = str(decimalBin)
+            aux = [str(inteiroBin), str(decimalBin[1::])]
+            numTruncado = ''.join(aux)
+            if '.' in str(numTruncado[0:precisao]):
+                numTruncado = str(numTruncado[0:precisao])
+            else:
+                numTruncado = str(numTruncado[0:precisao])
+            while True:
+                if len(numTruncado) <= precisao:
+                    numTruncado = numTruncado + '0'
+                else:
+                    break
+
+            truncado = True
+
     else:  # se o numero tiver a apenas parte real
         decimalBin = str(decimalBin)
         i = base = 0
@@ -128,6 +145,8 @@ def normaliza(inteiroBin, decimalBin, isNumeric=False, precisao=50, lower=-50, u
         decimal = float(decimalBin)
         if len(str(decimalBin)) - 2 > precisao:
             print('Truncamento')
+            numTruncado = str(decimalBin[0: precisao + 1])
+            truncado = True
         if base != 0:
             num = str(decimalBin)
         else:
@@ -135,9 +154,35 @@ def normaliza(inteiroBin, decimalBin, isNumeric=False, precisao=50, lower=-50, u
         base = base * (-1)
     if base > upper:
         print("Número normalizado: Overflow")
+        if truncado:
+            if numTruncado.isnumeric():
+                int_dec = converteInteiroBin(numTruncado)
+                print(int_dec)
+            elif float(numTruncado) >= 1:
+                aux2 = numTruncado.split('.')
+                int_dec = converteInteiroBin(aux2[0])
+                fra_dec = converteDecimalBin("0." + aux2[1], precisao)
+                numTruncado = int_dec + fra_dec
+                print(numTruncado)
+            else:
+                fra_dec = converteDecimalBin(numTruncado, precisao)
+                print(fra_dec)
         return -1
-    if base < lower:
+    elif base < lower:
         print("Número normalizado: Underflow")
+        if truncado:
+            if numTruncado.isnumeric():
+                int_dec = converteInteiroBin(numTruncado)
+                # print(int_dec)
+            elif float(numTruncado) >= 1:
+                aux2 = numTruncado.split('.')
+                int_dec = converteInteiroBin(aux2[0])
+                fra_dec = converteDecimalBin("0." + aux2[1], precisao)
+                numTruncado = int_dec + fra_dec
+                # print(numTruncado)
+            else:
+                fra_dec = converteDecimalBin(numTruncado, precisao)
+                # print(fra_dec)
         return -1
     norma = []
     norma.append(num)
